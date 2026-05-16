@@ -52,7 +52,8 @@ public class MainHook implements IXposedHookLoadPackage {
         if ("com.google.android.gms".equals(lpparam.packageName)) {
             // 1. Сразу отсекаем процесс аттестации
             if (lpparam.processName != null && lpparam.processName.contains("unstable")) {
-                 return;
+                XposedBridge.log(TAG + "UNSTABLE");
+                return;
              }
 
             boolean isTargetProcess = lpparam.processName != null && (lpparam.processName.contains("prime") || lpparam.processName.contains("persistent"));
@@ -70,11 +71,13 @@ public class MainHook implements IXposedHookLoadPackage {
                 // КРИТИЧЕСКИЙ ФИЛЬТР: Если вызов идет НЕ от Google One (red) — 
                 // делаем жесткий return, прерывая хук. Пойдут родные свойства устройства.
                 if (callingPackage == null || !callingPackage.equals("com.google.android.apps.subscriptions.red")) {
+                    XposedBridge.log(TAG + "NO RED");
                     return; 
                 }
             }
             
         }
+
         XposedBridge.log(TAG + ": Loading hooks for " + lpparam.packageName);
 
         // Initialize config (reads from file or uses embedded defaults)
