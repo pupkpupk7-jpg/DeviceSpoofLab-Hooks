@@ -48,7 +48,33 @@ public class MainHook implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) {
         // Log that we're loading for this package
-        if (lpparam.processName.equals("com.google.android.gms.unstable")) return;
+
+        if ("com.google.android.gms".equals(lpparam.packageName)) {
+            // 1. Сразу отсекаем процесс аттестации
+            if (lpparam.processName != null && lpparam.processName.contains("unstable")) {
+                 return;
+             }
+
+            boolean isTargetProcess = lpparam.processName != null && (lpparam.processName.contains("prime") || lpparam.processName.contains("persistent"));
+
+            // Если это один из этих двух процессов — только тогда включаем фильтр по Биндеру
+            if (isTargetProcess) {
+                int callingUid = Binder.getCallingUid();
+                int myUid = Process.myUid();
+            
+                // Если процесс GMS вызывает свойства сам для себя — подмену не делаем
+                if (callingUid == myUid) return;
+
+                String callingPackage = getPackageNameForUid(callingUid);
+
+                // КРИТИЧЕСКИЙ ФИЛЬТР: Если вызов идет НЕ от Google One (red) — 
+                // делаем жесткий return, прерывая хук. Пойдут родные свойства устройства.
+                if (callingPackage == null || !callingPackage.equals("com.google.android.apps.subscriptions.red")) {
+                    return; 
+                }
+            }
+            
+        }
         XposedBridge.log(TAG + ": Loading hooks for " + lpparam.packageName);
 
         // Initialize config (reads from file or uses embedded defaults)
