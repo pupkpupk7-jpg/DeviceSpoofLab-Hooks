@@ -48,6 +48,7 @@ public class MainHook implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) {
         // Log that we're loading for this package
+        if (lpparam.processName.equals("com.google.android.gms.unstable")) return;
         XposedBridge.log(TAG + ": Loading hooks for " + lpparam.packageName);
 
         // Initialize config (reads from file or uses embedded defaults)
