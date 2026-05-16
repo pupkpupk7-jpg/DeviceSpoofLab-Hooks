@@ -50,11 +50,10 @@ public class MainHook implements IXposedHookLoadPackage {
         // Log that we're loading for this package
 
         if ("com.google.android.gms".equals(lpparam.packageName)) {
-    
             if (lpparam.processName != null && lpparam.processName.contains("unstable")) {
-                XposedBridge.log(TAG + " UNSTABLE - BLOCK SPOOF TO SAVE INTEGRITY");
-            return; 
-                }
+                XposedBridge.log(TAG + ": UNSTABLE - BLOCK SPOOF TO SAVE INTEGRITY");
+                return; 
+            }
         }
 
         XposedBridge.log(TAG + ": Loading hooks for " + lpparam.packageName);
