@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DeviceSpoofLabs-Hooks</string>
-    <string name="xposed_description">Companion module for DeviceSpoofLab-Magisk. Spoofs device identifiers that cannot be changed via resetprop.</string>
+    <string name="app_name">Settings</string>
+    <string name="xposed_description">1111</string>
 
     <!-- Empty scope - user selects apps in LSPosed -->
     <string-array name="xposed_scope" />
