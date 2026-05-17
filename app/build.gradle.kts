@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.devicespooflab.hooks"
+    namespace = "com.assa.settings"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.devicespooflab.hooks"
+        applicationId = "com.assa.settings"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
